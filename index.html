@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>EP2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="canvas-container"></div>
+
+  <!-- ── Cinemática Directa (EP1) ── -->
+  <div id="ui">
+    <div id="ui-header">
+      <div id="ui-title">Cinemática Directa</div>
+    </div>
+
+    <div class="section-label"> Controles</div>
+
+    <div class="joint-row">
+      <label class="joint-label">
+        <span class="joint-name">q<sub>1</sub></span>
+        <span class="joint-range">−45° a 225°</span>
+      </label>
+      <input type="number" id="q1" class="joint-input" value="0" min="-45" max="225" step="1" placeholder="0" readonly>
+      <span class="joint-unit">°</span>
+    </div>
+
+    <div class="joint-row">
+      <label class="joint-label">
+        <span class="joint-name">q<sub>2</sub></span>
+        <span class="joint-range">0° a 125°</span>
+      </label>
+      <input type="number" id="q2" class="joint-input" value="0" min="0" max="125" step="1" placeholder="0" readonly>
+      <span class="joint-unit">°</span>
+    </div>
+
+    <div class="joint-row">
+      <label class="joint-label">
+        <span class="joint-name">q<sub>3</sub></span>
+        <span class="joint-range">0 a 30 cm</span>
+      </label>
+      <input type="number" id="q3" class="joint-input" value="20" min="0" max="30" step="0.1" placeholder="20" readonly>
+      <span class="joint-unit">cm</span>
+    </div>
+
+    <div class="section-label">Posición del efector final</div>
+
+    <div class="ef-grid">
+      <div class="ef-card">
+        <div class="ef-axis">X</div>
+        <div class="ef-value"><span id="ex">—</span></div>
+        <div class="ef-unit">cm</div>
+      </div>
+      <div class="ef-card">
+        <div class="ef-axis">Y</div>
+        <div class="ef-value"><span id="ey">—</span></div>
+        <div class="ef-unit">cm</div>
+      </div>
+      <div class="ef-card">
+        <div class="ef-axis">Z</div>
+        <div class="ef-value"><span id="ez">—</span></div>
+        <div class="ef-unit">cm</div>
+      </div>
+      <div id="ui-subtitle">Ana Kamila Cruz Contreras - Grupo 2007</div>
+    </div>
+
+    <div id="warn-box" class="hidden">
+      Valores fuera de rango
+    </div>
+  </div>
+
+  <!-- ── Trayectoria (EP2) ── -->
+  <div id="traj-panel">
+    <div id="traj-header">
+      <div id="traj-title">Trayectoria</div>
+      <div id="traj-subtitle">Polinomio de 5° orden</div>
+    </div>
+
+    <div class="section-label">Posición final (dentro del espacio de trabajo)</div>
+
+    <div class="joint-row">
+      <label class="joint-label">
+        <span class="joint-name">x<sub>f</sub></span>
+      </label>
+      <input type="number" id="xf" class="joint-input" value="20" step="0.1">
+      <span class="joint-unit">cm</span>
+    </div>
+    <div class="joint-row">
+      <label class="joint-label">
+        <span class="joint-name">y<sub>f</sub></span>
+      </label>
+      <input type="number" id="yf" class="joint-input" value="0" step="0.1">
+      <span class="joint-unit">cm</span>
+    </div>
+    <div class="joint-row">
+      <label class="joint-label">
+        <span class="joint-name">z<sub>f</sub></span>
+      </label>
+      <input type="number" id="zf" class="joint-input" value="50" step="0.1">
+      <span class="joint-unit">cm</span>
+    </div>
+
+    <div class="btn-row">
+      <button id="btn-generar" class="btn-accent">⚙ Generar</button>
+      <button id="btn-animar"  class="btn-outline" disabled>▶ Animar</button>
+    </div>
+
+    <div id="traj-status"></div>
+
+    <div class="section-label">Ejemplos dentro del espacio de trabajo</div>
+    <table class="ejemplos-tabla">
+      <thead><tr><th>xf</th><th>yf</th><th>zf</th></thead>
+      <tbody>
+        <tr class="ej-row" data-x="0"  data-y="0" data-z="70" ><td>0</td> <td>0</td><td>70</td> </tr>
+        <tr class="ej-row" data-x="14" data-y="0" data-z="57" ><td>14</td><td>0</td><td>57</td> </tr>
+        <tr class="ej-row" data-x="0"  data-y="21.65" data-z="62.50"><td>0</td><td>21.65</td><td>62.50</td></tr>
+        <tr class="ej-row" data-x="19.80" data-y="0" data-z="69.80"><td>19.80</td><td>0</td><td>69.80</td></tr>
+        <tr class="ej-row" data-x="-10.00" data-y="10.00" data-z="64.14"><td>-10</td><td>10</td><td>64.14</td>
+        </tbody>
+    </table>
+
+    <div class="section-label">Espacio Cartesiano</div>
+    <canvas id="graf-x"  width="284" height="76"></canvas>
+    <canvas id="graf-y"  width="284" height="76"></canvas>
+    <canvas id="graf-z"  width="284" height="76"></canvas>
+
+    <div class="section-label">Espacio Articular</div>
+    <canvas id="graf-q1" width="284" height="76"></canvas>
+    <canvas id="graf-q2" width="284" height="76"></canvas>
+    <canvas id="graf-q3" width="284" height="76"></canvas>
+  </div>
+
+  <!-- Modal de advertencia -->
+  <div id="modal-overlay" class="hidden">
+    <div id="modal">
+      <div id="modal-icon">⚠</div>
+      <div id="modal-title">Valores fuera de rango</div>
+      <div id="modal-body"></div>
+      <button id="modal-close">Aceptar</button>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
